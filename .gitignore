@@ -1,0 +1,6 @@
+.idea/
+venv/
+_tasks.py
+__pycache__
+.mypy_cache
+.pytest_cache
