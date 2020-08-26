@@ -1,5 +1,5 @@
 from app import app
-from flask import jsonify, request
+from flask import jsonify, request, render_template
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from .dashboard_funcs import DashboardFunc
 from .tasks_funcs import TaskFunc
@@ -8,11 +8,10 @@ from .user_func import UserFunc
 
 @app.route('/', methods=['GET'])
 def index():
-    return {'massage': 'Trello API'}, 200
+    return jsonify({'massage': 'Hello world!!!'}), 200
 
 
 @app.route('/users', methods=['GET'])
-@jwt_required
 def get_users_list():
     return UserFunc.get_users_list()
 
@@ -25,7 +24,7 @@ def signup():
 
 @app.route('/sign-in', methods=['POST'])
 def sign_in():
-    data = request.json
+    data = request.json['data']
     return UserFunc.sign_in(data)
 
 
@@ -46,7 +45,7 @@ def get_dashboards_list():
     return DashboardFunc.get_dashboards_list()
 
 
-@app.route('/dashboards/<int:dashboard_id>')
+@app.route('/dashboards/<int:dashboard_id>', methods=['GET'])
 @jwt_required
 def get_dashboard_tasks(dashboard_id):
     return DashboardFunc.get_dashboard_tasks(dashboard_id)

@@ -1,5 +1,6 @@
 from app import db
 from passlib.hash import sha256_crypt
+import json
 
 
 tasks = db.Table(

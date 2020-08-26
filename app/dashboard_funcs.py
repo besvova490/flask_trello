@@ -15,8 +15,8 @@ class DashboardFunc:
                 'dashboard_description': dashboard.description,
                 'dashboard_admin': str(
                     User.query.get(dashboard.admin_id).username),
-                'dashboard_tasks': str(dashboard.tasks),
-                'dashboard_workers': str(dashboard.users),
+                'dashboard_tasks': tuple({'name': task.name, 'id': task.id} for task in dashboard.tasks),
+                'dashboard_workers': tuple({'id': user.id, 'name': user.username} for user in dashboard.users),
             })
         return jsonify(dashboards=dashboards_list), 200
 
@@ -27,8 +27,8 @@ class DashboardFunc:
             dashboard = {
                 'dashboard_id': dashboard_id,
                 'dashboard_name': d1.name,
-                'dashboard_workers': str(d1.users),
-                'tasks': str(d1.tasks)
+                'dashboard_workers': tuple({'id': user.id, 'name': user.username} for user in d1.users),
+                'tasks': tuple({'name': task.name, 'id': task.id} for task in d1.tasks)
             }
             return jsonify(dashboard=dashboard), 200
         except AttributeError:

@@ -12,9 +12,8 @@ class TaskFunc:
                 'task_id': task.id,
                 'task_name': task.name,
                 'task_description': task.description,
-                'task_admin': str(
-                    User.query.get(task.admin_id).username),
-                'task_workers': str(task.users),
+                'task_admin': str(User.query.get(task.admin_id).username),
+                'task_workers': tuple({'id': user.id, 'name': user.username} for user in task.users),
                 'task_dashboard': Dashboard.query.get(
                     task.dashboard_id).name
             })

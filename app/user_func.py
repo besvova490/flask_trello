@@ -7,7 +7,6 @@ from flask_jwt_extended import (
     set_access_cookies,
     set_refresh_cookies, unset_jwt_cookies
 )
-
 jwt = JWTManager(app)
 
 
@@ -32,7 +31,7 @@ class UserFunc:
             return {
                 'message': f"User with the following email:"
                            f" {data['email']} does not exist"
-            }
+            }, 404
         if user.check_password_hash(data['password']):
             access_token = create_access_token(identity=user.id)
             refresh_token = create_refresh_token(identity=user.id)
@@ -56,10 +55,10 @@ class UserFunc:
                 'user_id': user.id,
                 'user_name': user.username,
                 'user_email': user.email,
-                'user_tasks_admin': str(user.tasks_admin),
-                'user_tasks': str(user.tasks),
-                'user_dashboard_admin': str(user.dashboards_admin),
-                'user_dashboards': str(user.dashboards)
+                'user_tasks_admin': tuple({'name': task.name, 'id': task.id} for task in user.tasks_admin),
+                'user_tasks': tuple({'name': task.name, 'id': task.id} for task in user.tasks),
+                'user_dashboard_admin': tuple({'name': dashboard.name, 'id': dashboard.id} for dashboard in user.dashboards_admin),
+                'user_dashboards': tuple({'name': dashboard.name, 'id': dashboard.id} for dashboard in user.dashboards)
 
             })
         return jsonify(users_list), 200
@@ -72,8 +71,7 @@ class UserFunc:
             return {'error_massage': 'User already in this dashboard'}, 409
         dashboard.users.append(user)
         db.session.commit()
-        return jsonify({'dashboard_users': str(dashboard.users),
-                       'user_dashboards': str(user.dashboards)}), 200
+        return jsonify({'message': 'successful'}), 200
 
     @staticmethod
     def remove_from_dashboard(user_id, dashboard_id):
@@ -83,8 +81,7 @@ class UserFunc:
             return {'error_massage': 'No such user in this dashboard'}, 409
         dashboard.users.remove(user)
         db.session.commit()
-        return jsonify({'dashboard_users': str(dashboard.users),
-                       'user_dashboards': str(user.dashboards)}), 200
+        return jsonify({'message': 'successful'}), 200
 
     @staticmethod
     def add_to_task(user_id, task_id):
@@ -96,8 +93,7 @@ class UserFunc:
             return {'error_massage': 'You can not add user to this task'}, 409
         task.users.append(user)
         db.session.commit()
-        return jsonify({'task_users': str(task.users),
-                        'user_tasks': str(user.tasks)}), 200
+        return jsonify({'message': 'successful'}), 200
 
     @staticmethod
     def remove_from_task(user_id, task_id):
@@ -107,5 +103,4 @@ class UserFunc:
             return {'error_massage': 'No such user in this task'}, 409
         task.users.remove(user)
         db.session.commit()
-        return jsonify({'task_users': str(task.users),
-                        'user_tasks': str(user.tasks)}), 200
+        return jsonify({'message': 'successful'}), 200
