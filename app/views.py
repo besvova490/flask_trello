@@ -1,5 +1,5 @@
 from app import app
-from flask import jsonify, request, render_template
+from flask import jsonify, request, make_response
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from .dashboard_funcs import DashboardFunc
 from .tasks_funcs import TaskFunc
@@ -8,7 +8,11 @@ from .user_func import UserFunc
 
 @app.route('/', methods=['GET'])
 def index():
-    return jsonify({'massage': 'Hello world!!!'}), 200
+    resp = make_response({'message': 'Hello world!!!',
+                    'title': 'Trello by besvova490'})
+    resp.set_cookie('key', value='hello')
+    resp.set_cookie('key3', value='hello3')
+    return resp, 200
 
 
 @app.route('/users', methods=['GET'])
