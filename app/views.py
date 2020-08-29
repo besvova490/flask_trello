@@ -8,8 +8,9 @@ from .user_func import UserFunc
 
 @app.route('/', methods=['GET'])
 def index():
-    resp = make_response({'message': 'Hello world!!!',
+    resp = make_response({'message': 'Hello world)))',
                     'title': 'Trello by besvova490'})
+    resp.set_cookie('hello', 'test')
     return resp, 200
 
 
