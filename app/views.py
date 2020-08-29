@@ -10,8 +10,6 @@ from .user_func import UserFunc
 def index():
     resp = make_response({'message': 'Hello world!!!',
                     'title': 'Trello by besvova490'})
-    resp.set_cookie('key', value='hello')
-    resp.set_cookie('key3', value='hello3')
     return resp, 200
 
 
