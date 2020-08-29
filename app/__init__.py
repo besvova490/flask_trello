@@ -7,9 +7,6 @@ from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.config.from_object(Config)
-app.config.update(
-    SESSION_COOKIE_SAMESITE='Lax',
-)
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)

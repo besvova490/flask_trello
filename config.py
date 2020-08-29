@@ -9,8 +9,26 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     APPLICATION_ROOT = '/api'
     APP_SECRET = 'SAJHF)HAw98heoahsokehI)ASHDF*Hgmsu9dhg'
-    SQLALCHEMY_DATABASE_URI = 'postgresql:///app'
     JWT_SECRET_KEY = 'super-secret'
     JWT_TOKEN_LOCATION = ['cookies']
     JWT_COOKIE_CSRF_PROTECT = False
+    SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
+
+
+class ProductionConfig(Config):
+    DEBUG = False
+
+
+class StagingConfig(Config):
+    DEVELOPMENT = True
+    DEBUG = True
+
+
+class DevelopmentConfig(Config):
+    DEVELOPMENT = True
+    DEBUG = True
+
+
+class TestingConfig(Config):
+    TESTING = True
 
